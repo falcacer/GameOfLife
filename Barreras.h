@@ -4,7 +4,6 @@
 #include <pthread.h>
 
 /* Definición de la estructura y sinónimo de tipo. */
-
 struct cond_barrier {
 	int count;
 	int waiting;
@@ -14,10 +13,13 @@ struct cond_barrier {
 
 typedef struct cond_barrier barrier_t;
 
+/* Inicializar una barrera. */
 int barrier_init(barrier_t *barr, unsigned int count);
 
+/* Esperar en una barrera. */
 int barrier_wait(barrier_t *barr);
 
+/* Destruir una barrera. */
 int barrier_destroy(barrier_t *barr);
 
-#endif
+#endif /* BARRERAS */

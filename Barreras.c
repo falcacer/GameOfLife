@@ -2,10 +2,12 @@
 #include <pthread.h>
 #include "Barreras.h"
 
-/* Operaciones*/
+/* Operaciones */
 
-/* Creación de una barrera de condición, tomando como argumento la cantidad de
-hilos que se van a esperar*/
+/*
+ * Creación de una barrera de condición, tomando como argumento la
+ * cantidad de hilos que se van a esperar.
+ */
 int barrier_init(barrier_t *barr, unsigned int count)
 {
 	barr->count = count;
@@ -15,15 +17,15 @@ int barrier_init(barrier_t *barr, unsigned int count)
 	return 0;
 }
 
-/* Función *bloqueante* para esperar a los demás hilos */
+/*
+ * Función *bloqueante* para esperar a los demás hilos.
+ */
 int barrier_wait(barrier_t *barr)
 {
 	assert(! pthread_mutex_lock(&barr->mutex) );
 	if (barr->waiting == barr->count - 1) {
-		// reseteamos la cuenta en 0 para poder volver a usar la barrera
 		barr->waiting = 0;
 		assert(! pthread_mutex_unlock(&barr->mutex) );
-		// aca asumo que ningun hilo va a tratar de bloquear el mutex
 		assert(! pthread_cond_broadcast(&barr->cond) );
 	}
 	else {
@@ -34,7 +36,9 @@ int barrier_wait(barrier_t *barr)
 	return 0;
 }
 
-/* Eliminación de la barrera */
+/*
+ * Eliminación de la barrera.
+ */
 int barrier_destroy(barrier_t *barr)
 {
 	assert(! barr->waiting );

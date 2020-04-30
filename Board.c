@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "Board.h"
 
-/* Creación del tablero */
+/* Creación del tablero. */
 int board_init(board_t *board, size_t row, size_t col)
 {
 	board->row = row;
@@ -12,7 +12,7 @@ int board_init(board_t *board, size_t row, size_t col)
 	return 0;
 }
 
-/* Creación del tablero con un elemento por default*/
+/* Creación del tablero con un elemento por default. */
 int board_init_def(board_t *board, size_t row, size_t col, char def)
 {
 	assert(! board_init(board, col, row) );
@@ -20,37 +20,33 @@ int board_init_def(board_t *board, size_t row, size_t col, char def)
 	return 0;
 }
 
-/* Leer el tablero en una posición (col, row) */
+/* Leer el tablero en una posición (col, row). */
 char board_get(board_t board, size_t row, size_t col)
 {
 	return board.tab[board.col * row + col];
 }
 
-/* Asignarle un valor 'val' a la posición (col, row) del tablero*/
+/* Asignarle un valor 'val' a la posición (col, row) del tablero. */
 int board_set(board_t board, size_t row, size_t col, char val)
 {
 	board.tab[board.col * row + col] = val;
 	return 0;
 }
 
-/* Leer de una lista de caracteres e interpretarla como un tablero */
+/* Leer de una lista de caracteres e interpretarla como un tablero. */
 int board_load(board_t *board, char *str)
 {
-	// aca saqué el strlen(str) porque puede pasar que se pase un string muy largo
 	for (int i = 0; i < board->col * board->row; i++)
 		board->tab[i] = str[i];
 	return 0;
 }
 
 /* Función para mostrar el tablero */
-/* La función 'board_show' asume que hay espacio suficiente en 'res' para alojar el tablero.*/
-void board_show(board_t board, char *res)
+void board_show(board_t board)
 {
 	for (int i = 0; i < board.row; i++){
 		for (int j = 0; j < board.col; j++){
 			printf("%c", board_get(board,i,j));
-			// aca hago que tambien se guarde en res el tablero
-			res[board.col * i + j] = board.tab[board.col * i + j];
 		}
 		printf("\n");
 	}
@@ -112,7 +108,7 @@ void updateSingle(board_t *boardOrigin, board_t *boardDest, size_t row, size_t c
 void updateBoard(board_t *boardOrigin, board_t *boardDest, int from, int size)
 {
 	int i, j;
-	for (int k = from; k < size; k++) {
+	for (int k = from; k < from + size; k++) {
 		i = k / boardOrigin->col;
 		j = k % boardOrigin->col;
 		updateSingle(boardOrigin, boardDest, i, j);
